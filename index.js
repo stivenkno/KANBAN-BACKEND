@@ -3,6 +3,10 @@ import cors from "cors";
 import { config } from "dotenv";
 import { PORT } from "./varsconfig.js";
 import authrouter from "./routes/authroutes.js";
+import columnsrouter from "./routes/columnsroutes.js";
+import projectsrouter from "./routes/projectsroutes.js";
+import authmiddleware from "./middlewares/authmiddleware.js";
+
 import pool from "./config.js";
 
 config();
@@ -13,11 +17,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authrouter);
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/columns", authmiddleware, columnsrouter);
+app.use("/projects", authmiddleware, projectsrouter);
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`App listening on port ${PORT}`);
 });

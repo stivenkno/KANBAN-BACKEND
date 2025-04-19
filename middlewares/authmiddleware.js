@@ -1,5 +1,6 @@
 // authMiddleware.js
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../varsconfig.js";
 
 const authMiddleware = (req, res, next) => {
   const token = req.header("Authorization");
@@ -18,7 +19,7 @@ const authMiddleware = (req, res, next) => {
     const tokenValue = token.split(" ")[1];
 
     // Verificar el token con la clave secreta
-    const decoded = jwt.verify(tokenValue, process.env.JWT_SECRET);
+    const decoded = jwt.verify(tokenValue, JWT_SECRET);
     // Adjuntar el usuario al request
     req.user = decoded;
     console.log(req.user);
