@@ -14,12 +14,12 @@ const gettasks = async (req, res) => {
 };
 
 const createTask = async (req, res) => {
-  const { title_task, id_project } = req.body;
+  const { title_task, id_column } = req.body;
 
   try {
     const result = await pool.query(
-      "INSERT INTO tasks (title_task, id_project, id_user) VALUES ($1, $2, $3) RETURNING *",
-      [title_task, id_project, req.user.id]
+      "INSERT INTO tasks (title_task, id_column, id_user) VALUES ($1, $2, $3) RETURNING *",
+      [title_task, id_column, req.user.id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
