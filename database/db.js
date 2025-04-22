@@ -31,7 +31,7 @@ const query = `
     title_task VARCHAR(255) NOT NULL,
     id_column INT NOT NULL,
     id_user INT NOT NULL,
-    position INT NOT NULL,
+    position SERIAL NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_column) REFERENCES columns(id_column),
     FOREIGN KEY (id_user) REFERENCES users(id_user)
