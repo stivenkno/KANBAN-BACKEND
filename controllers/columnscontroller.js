@@ -1,12 +1,12 @@
 import pool from "../config.js";
 
 const createColumn = async (req, res) => {
-  const { title_column, id_project, id_user } = req.body;
+  const { title_column, id_project } = req.body;
 
   try {
     const result = await pool.query(
       "INSERT INTO columns (title_column, id_project, id_user) VALUES ($1, $2, $3) RETURNING *",
-      [title_column, id_project, id_user]
+      [title_column, id_project, req.user.id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
