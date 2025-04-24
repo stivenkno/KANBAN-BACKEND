@@ -13,6 +13,7 @@ const query = `
     id_user INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES users(id_user)
+    ON DELETE CASCADE
   );
 
   CREATE TABLE IF NOT EXISTS columns (
@@ -24,7 +25,8 @@ const query = `
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_project) REFERENCES projects(id_project),
     FOREIGN KEY (id_user) REFERENCES users(id_user)
-  );
+    ON DELETE CASCADE
+      );
 
   CREATE TABLE IF NOT EXISTS tasks (
     id_task SERIAL PRIMARY KEY,
@@ -35,6 +37,7 @@ const query = `
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_column) REFERENCES columns(id_column),
     FOREIGN KEY (id_user) REFERENCES users(id_user)
+    ON DELETE CASCADE
   );
 `;
 
