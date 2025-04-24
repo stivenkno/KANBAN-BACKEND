@@ -33,9 +33,8 @@ const getcolumns = async (req, res) => {
 const updateColumn = async (req, res) => {};
 
 const deleteColumn = async (req, res) => {
+  const { id_column } = req.body;
   try {
-    const { id_column } = req.body;
-
     await pool.query("DELETE FROM tasks WHERE id_column = $1", [id_column]);
 
     const result = await pool.query(
