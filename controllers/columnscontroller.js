@@ -30,7 +30,44 @@ const getcolumns = async (req, res) => {
   }
 };
 
-const updateColumn = async (req, res) => {};
+const updateColumn = async (req, res) => {
+  const columns = req.body; // Array de columnas ordenadas
+  const idProject = columns[0]?.id_project;
+
+  if (!idProject) {
+    return res.status(400).json({ message: "Falta el id_project" });
+  }
+
+  try {
+    // Iniciar transacción
+    await pool.query("BEGIN");
+
+    // 2. Eliminar columnas del proyecto para ese usuario
+    await pool.query(
+      "DELETE FROM columns WHERE id_project = $1 AND id_user = $2",
+      [idProject, req.user.id]
+    );
+
+    // 3. Insertar nuevamente las columnas en el orden recibido
+    for (let i = 0; i < columns.length; i++) {
+      const col = columns[i];
+      await pool.query(
+        `INSERT INTO columns (id_column, title_column, id_project, id_user, position, created_at)
+         VALUES ($1, $2, $3, $4, $5, NOW())`,
+        [col.id_column, col.title_column, idProject, req.user.id, i]
+      );
+    }
+
+    // Confirmar transacción
+    await pool.query("COMMIT");
+
+    res.status(200).json({ message: "Columnas actualizadas correctamente" });
+  } catch (err) {
+    console.error(err);
+    await pool.query("ROLLBACK");
+    res.status(500).json({ message: "Error al actualizar columnas" });
+  }
+};
 
 const deleteColumn = async (req, res) => {
   const { id_column } = req.body;

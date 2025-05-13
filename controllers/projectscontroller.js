@@ -30,8 +30,9 @@ const createProject = async (req, res) => {
 };
 
 const deleteProject = async (req, res) => {
+  const { id_project } = req.body;
   try {
-    const { id_project } = req.body;
+    await pool.query("DELETE FROM columns WHERE id_project = $1", [id_project]);
 
     const result = await pool.query(
       "DELETE FROM projects WHERE id_project = $1",
